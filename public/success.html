@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Successful | Elegance Rentals</title>
+    <link rel="stylesheet" href="success.css" />
+</head>
+<body>
+
+<div class="container">
+    <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" class="tick" />
+
+    <h1>Order Placed Successfully!</h1>
+
+    <p class="message">
+        Thank you for shopping with Elegance Rentals.  
+        Your outfit will be delivered to the address you provided.
+    </p>
+
+    <button onclick="goHome()">Go to Home</button>
+</div>
+
+<script>
+    // Clear cart + order data
+    localStorage.removeItem("orderData");
+    localStorage.removeItem("cart");
+
+    function goHome() {
+        window.location.href = "/dashboard.html";
+    }
+</script>
+
+</body>
+</html>

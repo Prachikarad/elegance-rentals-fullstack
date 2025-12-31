@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment | Elegance Rentals</title>
+    <link rel="stylesheet" href="payment.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <h2>Elegance Rentals</h2>
+        <button onclick="goBack()" class="back-btn">← Back</button>
+    </nav>
+
+    <div class="payment-box">
+        <h2>Complete Your Order</h2>
+
+        <p id="pName"></p>
+        <p id="pPrice"></p>
+        <p id="pDeposit"></p>
+        <p id="pSize"></p>
+
+        <label>Apply Coupon:</label>
+        <input id="couponInput" placeholder="FIRST50">
+
+        <button class="apply-btn" onclick="applyCoupon()">Apply</button>
+
+        <h3 id="finalAmount"></h3>
+
+        <button class="pay-btn" onclick="completePayment()">Confirm & Pay</button>
+    </div>
+
+    <script src="payment.js"></script>
+
+</body>
+</html>

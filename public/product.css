@@ -1,0 +1,60 @@
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #f7f7f7;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+    padding: 40px;
+}
+
+.image-section img {
+    width: 420px;
+    height: 560px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.details-section {
+    width: 60%;
+}
+
+.price, .deposit {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.rent-btn {
+    padding: 14px 20px;
+    font-size: 18px;
+    background: #007bff;
+    color: white;
+    border: none;
+    margin-top: 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.wish-btn {
+    padding: 14px 20px;
+    font-size: 18px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    margin-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.cart-btn {
+    padding: 14px 20px;
+    font-size: 18px;
+    background: #ff9100;
+    color: white;
+    border: none;
+    margin-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}

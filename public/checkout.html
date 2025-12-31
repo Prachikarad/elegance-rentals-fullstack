@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - Elegance Rentals</title>
+  <link rel="stylesheet" href="styles/checkout.css">
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Delivery Details</h2>
+
+  <label>Full Name</label>
+  <input type="text" id="name" placeholder="Enter full name">
+
+  <label>Mobile Number</label>
+  <input type="text" id="mobile" placeholder="Your mobile number">
+
+  <label>Delivery Address</label>
+  <textarea id="address" placeholder="House No, Street, Area, City"></textarea>
+
+  <label>Pincode</label>
+  <input type="text" id="pincode" placeholder="Enter 6-digit pincode">
+
+  <h2>Select Payment Method</h2>
+
+  <div class="payment-box">
+
+    <label>
+      <input type="radio" name="payment" value="upi" checked>
+      UPI (Google Pay / PhonePe / Paytm)
+    </label>
+
+    <label>
+      <input type="radio" name="payment" value="card">
+      Debit / Credit Card
+    </label>
+
+    <label>
+      <input type="radio" name="payment" value="cod">
+      Cash on Delivery (COD)
+    </label>
+
+  </div>
+
+  <button onclick="placeOrder()">Place Order</button>
+
+  <p id="msg"></p>
+</div>
+
+<script src="scripts/checkout.js"></script>
+
+</body>
+</html>

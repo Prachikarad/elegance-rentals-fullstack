@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Elegance Rentals</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">Elegance Rentals</div>
+  <div class="nav-right">
+    <input type="text" id="search" placeholder="Search outfit..." />
+    <button id="themeToggle" class="theme-btn">🌙</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- CATEGORY FILTERS -->
+<div class="filters">
+  <button onclick="filterCategory('All')">All</button>
+  <button onclick="window.location.href='/wishlist.html'" class="wishlist-btn">
+    Wishlist ❤️
+  </button>
+</div>
+<section class="text-hero">
+  <h1>LUXURY WITHIN REACH, JUST FOR YOU..!</h1>
+  <p>
+    Rent premium designer outfits for weddings, festivals, and special occasions.
+    Look stunning without buying.
+  </p>
+</section>
+
+<!-- MAIN OUTFIT GRID -->
+<h2 class="section-title">Available Outfits</h2>
+<div id="items" class="grid-container"></div>
+
+<script src="dashboard.js"></script>
+</body>
+
+</html>

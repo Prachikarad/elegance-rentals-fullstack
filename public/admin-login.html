@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e9efff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .box {
+            background: white;
+            padding: 40px;
+            width: 380px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h2 {
+            color: #0d47a1;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #aaa;
+            font-size: 16px;
+        }
+
+        button {
+            width: 95%;
+            padding: 12px;
+            background: #0d47a1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        #adminMsg {
+            margin-top: 12px;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Admin Login</h2>
+
+    <input id="adminUsername" placeholder="Username">
+    <input id="adminPassword" type="password" placeholder="Password">
+    
+    <button onclick="adminLogin()">Login</button>
+
+    <p id="adminMsg"></p>
+</div>
+
+<script>
+async function adminLogin() {
+    const username = document.getElementById("adminUsername").value.trim();
+    const password = document.getElementById("adminPassword").value.trim();
+    const msg = document.getElementById("adminMsg");
+
+    msg.innerHTML = "";
+
+    if (!username || !password) {
+        msg.style.color = "red";
+        msg.innerHTML = "Please enter username & password.";
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:5000/api/admin-auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            msg.style.color = "red";
+            msg.innerHTML = data.message;
+            return;
+        }
+
+        msg.style.color = "green";
+        msg.innerHTML = "Login successful! Redirecting...";
+
+        // save token
+        localStorage.setItem("adminToken", data.token);
+
+        setTimeout(() => {
+            window.location.href = "admin.html";
+        }, 1200);
+
+    } catch (error) {
+        msg.style.color = "red";
+        msg.innerHTML = "Server error. Try again later.";
+        console.error(error);
+    }
+}
+</script>
+
+</body>
+</html>

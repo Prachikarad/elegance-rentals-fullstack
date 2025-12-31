@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel - Elegance Rentals</title>
+
+<style>
+body {
+    margin: 0;
+    display: flex;
+    font-family: Arial;
+    background: #eef3ff;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    background: #0d47a1;
+    color: white;
+    height: 100vh;
+    padding-top: 30px;
+    position: fixed;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 22px;
+}
+
+.sidebar button {
+    width: 85%;
+    margin: 12px auto;
+    display: block;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 7px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sidebar button:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* Main Area */
+.main {
+    margin-left: 260px;
+    padding: 20px;
+    width: calc(100% - 260px);
+}
+
+.panel {
+    display: none;
+}
+
+h1 {
+    color: #0d47a1;
+}
+
+/* Cards */
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    margin-bottom: 15px;
+}
+
+/* Input fields */
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    margin: 8px 0;
+}
+
+.submit-btn {
+    padding: 12px;
+    background: #0d47a1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th {
+    background: #0d47a1;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background: #f0f4ff;
+}
+
+.delete-btn {
+    background: red;
+    color: white;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2>Elegance Admin</h2>
+
+    <button onclick="showPanel('dashboard')">Dashboard</button>
+    <button onclick="showPanel('add')">Add Outfit</button>
+    <button onclick="showPanel('manage')">Manage Outfits</button>
+    <button onclick="showPanel('orders')">Orders</button>
+    <button onclick="showPanel('users')">Users</button>
+    <button onclick="logout()">Logout</button>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="panel">
+        <h1>Admin Dashboard</h1>
+        <div id="stats"></div>
+    </div>
+
+    <!-- Add Outfit -->
+    <div id="add" class="panel">
+        <h1>Add New Outfit</h1>
+        <div class="card">
+            <form id="addForm">
+                <input id="name" placeholder="Outfit Name" required>
+                <input id="category" placeholder="Category" required>
+                <input id="price" type="number" placeholder="Rental Price" required>
+                <input id="deposit" type="number" placeholder="Deposit Amount" required>
+                <textarea id="description" placeholder="Description"></textarea>
+                <input id="image" type="file" required>
+
+                <button class="submit-btn" type="submit">Add Outfit</button>
+                <p id="msg"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Manage Outfits -->
+    <div id="manage" class="panel">
+        <h1>Manage Outfits</h1>
+        <div id="itemsTable"></div>
+    </div>
+
+    <!-- Orders -->
+    <div id="orders" class="panel">
+        <h1>All Orders</h1>
+        <div id="ordersTable"></div>
+    </div>
+
+    <!-- Users -->
+    <div id="users" class="panel">
+        <h1>Users</h1>
+        <div id="usersTable"></div>
+    </div>
+
+</div>
+
+<script>
+/* If not logged in, redirect */
+if (!localStorage.getItem("adminToken")) {
+    window.location.href = "admin-login.html";
+}
+
+/* Sidebar switching */
+function showPanel(id) {
+    document.querySelectorAll(".panel").forEach(p => p.style.display = "none");
+    document.getElementById(id).style.display = "block";
+
+    if (id === "dashboard") loadStats();
+    if (id === "manage") loadItems();
+    if (id === "orders") loadOrders();
+    if (id === "users") loadUsers();
+}
+
+/* Logout */
+function logout() {
+    localStorage.removeItem("adminToken");
+    window.location.href = "admin-login.html";
+}
+
+/* Dashboard stats */
+async function loadStats() {
+    const token = localStorage.getItem("adminToken");
+
+    let items = await fetch("/api/admin/items", {
+        headers: { "Authorization": "Bearer " + token }
+    }).then(r => r.json());
+
+    let orders = await fetch("/api/admin/orders", {
+        headers: { "Authorization": "Bearer " + token }
+    }).then(r => r.json());
+
+    document.getElementById("stats").innerHTML = `
+        <div class="card">
+            <h3>Total Outfits: ${items.length}</h3>
+            <h3>Total Orders: ${orders.length}</h3>
+        </div>
+    `;
+}
+
+/* Add outfit */
+document.getElementById("addForm").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("adminToken");
+    let formData = new FormData();
+
+    formData.append("name", name.value);
+    formData.append("category", category.value);
+    formData.append("price", price.value);
+    formData.append("deposit", deposit.value);
+    formData.append("description", description.value);
+    formData.append("image", image.files[0]);
+
+    let res = await fetch("/api/admin/items/add", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        body: formData
+    });
+
+    let data = await res.json();
+    msg.innerHTML = data.message;
+});
+
+/* Manage Items */
+/* ============================
+   MANAGE ITEMS (with Edit/Delete)
+============================ */
+async function loadItems() {
+  const token = localStorage.getItem("adminToken");
+  if (!token) return window.location.href = "admin-login.html";
+
+  let res = await fetch("/api/admin/items", {
+    headers: { "Authorization": "Bearer " + token }
+  });
+
+  if (!res.ok) {
+    document.getElementById("itemsTable").innerHTML = "<p>Error loading items</p>";
+    return;
+  }
+
+  let items = await res.json();
+
+  // build table
+  let html = `
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  items.forEach(i => {
+    const imgSrc = i.image && i.image.startsWith("/") ? i.image : (i.image || "");
+    html += `
+      <tr>
+        <td>${imgSrc ? `<img src="${imgSrc}" width="80" style="object-fit:cover;border-radius:6px">` : ''}</td>
+        <td>${escapeHtml(i.name)}</td>
+        <td>${escapeHtml(i.category || '')}</td>
+        <td>₹${i.price}</td>
+        <td>
+          <button class="submit-btn" style="margin-right:8px" onclick='editItem("${i._id}")'>Edit</button>
+          <button class="delete-btn" onclick='deleteItem("${i._id}")'>Delete</button>
+        </td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+  document.getElementById("itemsTable").innerHTML = html;
+}
+
+/* escape to avoid broken HTML */
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/* DELETE item */
+async function deleteItem(id) {
+  if (!confirm("Are you sure you want to delete this outfit?")) return;
+  const token = localStorage.getItem("adminToken");
+  try {
+    const res = await fetch("/api/admin/items/" + id, {
+      method: "DELETE",
+      headers: { "Authorization": "Bearer " + token }
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert(data.message || "Deleted");
+      loadItems();
+    } else {
+      alert(data.message || "Delete failed");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  }
+}
+
+/* EDIT item (prompt-based quick editor) */
+async function editItem(id) {
+  // fetch current item to prefill
+  const token = localStorage.getItem("adminToken");
+  const resItem = await fetch("/api/admin/items", {
+    headers: { "Authorization": "Bearer " + token }
+  });
+  const allItems = await resItem.json();
+  const item = allItems.find(x => x._id === id);
+  if (!item) return alert("Item not found");
+
+  // prompt for new values (leave blank to keep)
+  const newName = prompt("New name (leave blank to keep):", item.name) || item.name;
+  const newCategory = prompt("New category (leave blank to keep):", item.category || '') || item.category;
+  const newPrice = prompt("New price (leave blank to keep):", String(item.price)) || String(item.price);
+  const newDeposit = prompt("New deposit (leave blank to keep):", String(item.deposit || 0)) || String(item.deposit || 0);
+  const newSizes = prompt("Sizes comma separated (leave blank to keep):", (item.sizes || []).join(",")) || (item.sizes || []).join(",");
+  const newDesc = prompt("New description (leave blank to keep):", item.description || '') || item.description || '';
+
+  // ask if want to upload new image (quick approach: provide image URL)
+  const imageChoice = confirm("Do you want to update image by URL? (OK = Yes, Cancel = No)");
+  let newImageUrl = "";
+  if (imageChoice) {
+    newImageUrl = prompt("Enter full image URL (leave blank to skip):", item.image || "") || item.image || "";
+  }
+
+  // Build body
+  const body = {
+    name: newName,
+    category: newCategory,
+    price: newPrice,
+    deposit: newDeposit,
+    sizes: newSizes,
+    description: newDesc
+  };
+  if (newImageUrl) body.image = newImageUrl;
+
+  // send PUT
+  try {
+    const res = await fetch("/api/admin/items/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert("Item updated");
+      loadItems();
+    } else {
+      alert(data.message || "Update failed");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  }
+}
+
+
+/* Orders */
+async function loadOrders() {
+    const token = localStorage.getItem("adminToken");
+    let orders = await fetch("/api/admin/orders", {
+        headers: { "Authorization": "Bearer " + token }
+    }).then(r => r.json());
+
+    let html = `
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Outfit</th>
+                <th>Total</th>
+            </tr>
+    `;
+
+    orders.forEach(o => {
+        html += `
+            <tr>
+                <td>${o.userId?.username}</td>
+                <td>${o.itemId?.name}</td>
+                <td>₹${o.totalAmount}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+    document.getElementById("ordersTable").innerHTML = html;
+}
+
+/* Users */
+async function loadUsers() {
+    let users = await fetch("/api/auth/users").then(r => r.json());
+
+    let html = `
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Joined</th>
+            </tr>
+    `;
+
+    users.forEach(u => {
+        html += `
+            <tr>
+                <td>${u.username}</td>
+                <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+            </tr>
+        `;
+    });
+
+    html += "</table>";
+    document.getElementById("usersTable").innerHTML = html;
+}
+</script>
+
+</body>
+</html>

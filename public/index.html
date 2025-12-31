@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login | Elegance Rentals</title>
+
+  <!-- Font Awesome Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <!-- GOOGLE FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #5f2c82, #49a09d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      width: 380px;
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      animation: fadeIn 0.7s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-card h1 {
+      margin-bottom: 5px;
+      color: #3a0ca3;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 25px;
+      font-size: 14px;
+    }
+
+    .input-box {
+      display: flex;
+      align-items: center;
+      background: #f2f4f8;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 18px;
+    }
+
+    .input-box:focus-within {
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.3);
+    }
+
+    .input-box i {
+      color: #777;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+
+    .input-box input {
+      border: none;
+      outline: none;
+      background: none;
+      width: 100%;
+      font-size: 15px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #4361ee, #3a0ca3);
+      color: #fff;
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    .btn.secondary {
+      background: #f1f1f1;
+      color: #333;
+    }
+
+    .btn.secondary:hover {
+      background: #e0e0e0;
+    }
+
+    #msg {
+      margin-top: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    #msg.error {
+      color: #e63946;
+    }
+
+    #msg.success {
+      color: #2a9d8f;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-container">
+    <div class="login-card">
+      <h1>Elegance Rentals</h1>
+      <p class="subtitle">Login or create your account</p>
+
+      <div class="input-box">
+        <i class="fa fa-user"></i>
+        <input type="text" id="username" placeholder="Username" />
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="password" placeholder="Password" />
+      </div>
+
+      <button class="btn primary" onclick="login()">Login</button>
+      <button class="btn secondary" onclick="register()">Register</button>
+
+      <p id="msg"></p>
+    </div>
+  </div>
+
+  <script>
+    async function register() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("msg");
+
+      if (!username || !password) {
+        msg.className = "error";
+        msg.innerText = "Please enter username and password";
+        return;
+      }
+
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        msg.className = "success";
+        msg.innerText = "Registered successfully! You can login now.";
+      } else {
+        msg.className = "error";
+        msg.innerText = data.message || "Registration failed";
+      }
+    }
+
+    async function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const msg = document.getElementById("msg");
+
+      if (!username || !password) {
+        msg.className = "error";
+        msg.innerText = "Please enter username and password";
+        return;
+      }
+
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        msg.className = "success";
+        msg.innerText = "Login successful! Redirecting...";
+        setTimeout(() => {
+          window.location.href = "/dashboard.html";
+        }, 1000);
+      } else {
+        msg.className = "error";
+        msg.innerText = data.message || "Login failed";
+      }
+    }
+  </script>
+
+</body>
+</html>

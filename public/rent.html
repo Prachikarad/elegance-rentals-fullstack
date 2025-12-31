@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rent Outfit - Elegance Rentals</title>
+    <link rel="stylesheet" href="rent.css">
+</head>
+<body>
+
+<div class="rent-container">
+
+    <div class="image-box">
+        <img id="rentImage" src="" alt="Outfit">
+    </div>
+
+    <div class="details-box">
+        <h1 id="rentName"></h1>
+
+        <p class="price">Daily Rent: ₹<span id="rentPrice"></span></p>
+        <p class="deposit">Deposit: ₹<span id="rentDeposit"></span></p>
+
+        <label>Rent From:</label>
+        <input type="date" id="startDate">
+
+        <label>Rent To:</label>
+        <input type="date" id="endDate">
+
+        <p class="total">Total Days: <span id="days">0</span></p>
+
+        <p class="total">Total Rent: ₹<span id="calculatedAmount">0</span></p>
+
+        <p class="discount green">First Time User Discount (10%): ₹<span id="discount">0</span></p>
+
+        <h2 class="payable">Final Payable: ₹<span id="finalAmount">0</span></h2>
+    
+        <button id="confirmBtn" class="rent-btn">Confirm Order</button>
+
+
+    </div>
+
+</div>
+
+<script src="rent.js"></script>
+
+</body>
+</html>

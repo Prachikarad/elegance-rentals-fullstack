@@ -1,0 +1,55 @@
+body {
+  background: #f0f2f5;
+  font-family: Arial;
+}
+
+.container {
+  width: 40%;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 18px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.payment-box label {
+  display: block;
+  margin: 10px 0;
+  font-size: 17px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: #0d6efd;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0748b5;
+}
+
+#msg {
+  margin-top: 15px;
+  font-size: 18px;
+  text-align: center;
+  color: rgb(5, 163, 5);
+}
