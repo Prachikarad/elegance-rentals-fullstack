@@ -12,7 +12,6 @@ const itemRoutes = require("./routes/items");
 // routes
 const authRoutes = require("./routes/auth"); // optional if exists - keep if you have it
 const adminRoutes = require("./routes/admin");
-const adminAuthRoutes = require("./routes/adminAuth");
 
 const app = express();
 
@@ -28,7 +27,6 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads"))); 
 // mount routes
 if (authRoutes) app.use("/api/auth", authRoutes); // if you have auth routes
 app.use("/api/admin", adminRoutes);
-app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/items", itemRoutes);
 
 

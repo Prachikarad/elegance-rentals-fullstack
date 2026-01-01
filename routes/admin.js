@@ -5,7 +5,50 @@ const multer = require('multer');
 const path = require('path');
 const Item = require('../models/Item');
 const Order = require('../models/Order');
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const adminAuth = require('../middleware/adminAuth');
+// POST /api/admin/login  -> Admin Login
+router.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    const admin = await User.findOne({ username });
+
+    if (!admin) {
+      return res.status(400).json({ message: 'Admin not found' });
+    }
+
+    if (admin.role !== 'admin') {
+      return res.status(403).json({ message: 'Not an admin account' });
+    }
+
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Wrong password' });
+    }
+
+    const token = jwt.sign(
+      { id: admin._id, role: admin.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    res.json({
+      token,
+      user: {
+        username: admin.username,
+        role: admin.role
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 // multer storage -> save to public/uploads
 const storage = multer.diskStorage({
