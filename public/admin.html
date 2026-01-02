@@ -228,30 +228,41 @@ async function loadStats() {
 }
 
 /* Add outfit */
+/* Add outfit */
 document.getElementById("addForm").addEventListener("submit", async e => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const token = localStorage.getItem("adminToken");
-    let formData = new FormData();
+  const token = localStorage.getItem("adminToken");
+  const msg = document.getElementById("msg"); // ✅ FIX
 
-    formData.append("name", name.value);
-    formData.append("category", category.value);
-    formData.append("price", price.value);
-    formData.append("deposit", deposit.value);
-    formData.append("description", description.value);
-    formData.append("image", image.files[0]);
+  if (!token) {
+    msg.innerHTML = "Admin not logged in";
+    return;
+  }
 
-    let res = await fetch("/api/admin/items/add", {
-        method: "POST",
-        headers: {
-            "Authorization": "Bearer " + token
-        },
-        body: formData
-    });
+  let formData = new FormData();
+  formData.append("name", name.value);
+  formData.append("category", category.value);
+  formData.append("price", price.value);
+  formData.append("deposit", deposit.value);
+  formData.append("description", description.value);
+  formData.append("image", image.files[0]);
 
-    let data = await res.json();
-    msg.innerHTML = data.message;
+  let res = await fetch(
+    "https://elegance-rentals-fullstack.onrender.com/api/admin/items/add", // ✅ FIX
+    {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formData
+    }
+  );
+
+  let data = await res.json();
+  msg.innerHTML = data.message;
 });
+
 
 /* Manage Items */
 /* ============================
