@@ -1,7 +1,7 @@
+//middleware/adminAuth.js
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = process.env.JWT_SECRET || "ADMIN_SECRET_KEY";
-
+const JWT_SECRET = process.env.JWT_SECRET || "UNIFIED_SECRET_KEY";
 module.exports = function adminAuth(req, res, next) {
   try {
     const authHeader = req.headers.authorization;

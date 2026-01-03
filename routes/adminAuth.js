@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: admin._id, role: "admin" },
+      { id: admin._id, isAdmin: true },
       JWT_SECRET,
       { expiresIn: "1d" }
     );

@@ -1,8 +1,7 @@
 // middleware/auth.js
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.JWT_SECRET || 'verysecret_dev_key';
-
+const SECRET = process.env.JWT_SECRET || 'UNIFIED_SECRET_KEY';
 function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization || '';
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;

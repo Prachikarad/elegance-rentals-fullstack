@@ -1,3 +1,4 @@
+//public/admin.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -211,11 +212,11 @@ function logout() {
 async function loadStats() {
     const token = localStorage.getItem("adminToken");
 
-    let items = await fetch("/api/admin/items", {
+    let items = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items", {
         headers: { "Authorization": "Bearer " + token }
     }).then(r => r.json());
 
-    let orders = await fetch("/api/admin/orders", {
+    let orders = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/orders", {
         headers: { "Authorization": "Bearer " + token }
     }).then(r => r.json());
 
@@ -271,7 +272,7 @@ async function loadItems() {
   const token = localStorage.getItem("adminToken");
   if (!token) return window.location.href = "admin-login.html";
 
-  let res = await fetch("/api/admin/items", {
+  let res = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items", {
     headers: { "Authorization": "Bearer " + token }
   });
 
@@ -333,7 +334,7 @@ async function deleteItem(id) {
   if (!confirm("Are you sure you want to delete this outfit?")) return;
   const token = localStorage.getItem("adminToken");
   try {
-    const res = await fetch("/api/admin/items/" + id, {
+    const res = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items/" + id, {
       method: "DELETE",
       headers: { "Authorization": "Bearer " + token }
     });
@@ -354,7 +355,7 @@ async function deleteItem(id) {
 async function editItem(id) {
   // fetch current item to prefill
   const token = localStorage.getItem("adminToken");
-  const resItem = await fetch("/api/admin/items", {
+  const resItem = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items", {
     headers: { "Authorization": "Bearer " + token }
   });
   const allItems = await resItem.json();
@@ -389,7 +390,7 @@ async function editItem(id) {
 
   // send PUT
   try {
-    const res = await fetch("/api/admin/items/" + id, {
+    const res = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -414,7 +415,7 @@ async function editItem(id) {
 /* Orders */
 async function loadOrders() {
     const token = localStorage.getItem("adminToken");
-    let orders = await fetch("/api/admin/orders", {
+    let orders = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/orders", {
         headers: { "Authorization": "Bearer " + token }
     }).then(r => r.json());
 
@@ -443,7 +444,7 @@ async function loadOrders() {
 
 /* Users */
 async function loadUsers() {
-    let users = await fetch("/api/auth/users").then(r => r.json());
+    let users = await fetch("https://elegance-rentals-fullstack.onrender.com/api/auth/users").then(r => r.json());
 
     let html = `
         <table>
@@ -460,7 +461,7 @@ async function loadUsers() {
                 <td>${new Date(u.createdAt).toLocaleDateString()}</td>
             </tr>
         `;
-    });
+    });	
 
     html += "</table>";
     document.getElementById("usersTable").innerHTML = html;
