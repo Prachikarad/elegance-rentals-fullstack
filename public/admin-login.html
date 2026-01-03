@@ -71,52 +71,38 @@
 
     <p id="adminMsg"></p>
 </div>
-
 <script>
 async function adminLogin() {
-    const username = document.getElementById("adminUsername").value.trim();
-    const password = document.getElementById("adminPassword").value.trim();
-    const msg = document.getElementById("adminMsg");
+  const username = document.getElementById("adminUsername").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+  const msg = document.getElementById("adminMsg");
 
-    msg.innerHTML = "";
+  msg.textContent = "";
 
-    if (!username || !password) {
-        msg.style.color = "red";
-        msg.innerHTML = "Please enter username & password.";
-        return;
+  try {
+    const res = await fetch(
+      "https://elegance-rentals-fullstack.onrender.com/api/admin-auth/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.textContent = data.message;
+      msg.style.color = "red";
+      return;
     }
 
-    try {
-        const res = await fetch(
-           "https://elegance-rentals-fullstack.onrender.com/api/admin-auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-            msg.style.color = "red";
-            msg.innerHTML = data.message;
-            return;
-        }
-
-        msg.style.color = "green";
-        msg.innerHTML = "Login successful! Redirecting...";
-
-        // save token
-        localStorage.setItem("adminToken", data.token);
-
-        setTimeout(() => {
-            window.location.href = "admin.html";
-        }, 1200);
-
-    } catch (error) {
-        msg.style.color = "red";
-        msg.innerHTML = "Server error. Try again later.";
-        console.error(error);
-    }
+    localStorage.setItem("adminToken", data.token);
+    window.location.href = "admin.html";
+  } catch (err) {
+    msg.textContent = "Server error. Try again later.";
+    msg.style.color = "red";
+  }
 }
 </script>
 

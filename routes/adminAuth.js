@@ -11,45 +11,33 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
-      return res.status(400).json({ message: "Missing username or password" });
+      return res.status(400).json({ message: "Missing credentials" });
     }
 
-    // find user
     const admin = await User.findOne({ username });
     if (!admin) {
-      return res.status(400).json({ message: "Admin not found" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // check admin role
     if (admin.role !== "admin") {
       return res.status(403).json({ message: "Not an admin account" });
     }
 
-    // check password
-    const ok = await bcrypt.compare(password, admin.password);
-    if (!ok) {
-      return res.status(400).json({ message: "Wrong password" });
+    const match = await bcrypt.compare(password, admin.password);
+    if (!match) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // ✅ CORRECT TOKEN (IMPORTANT PART)
     const token = jwt.sign(
-      {
-        id: admin._id,
-        username: admin.username,
-        isAdmin: true
-      },
-      process.env.JWT_SECRET,   // ✅ SAME SECRET USED EVERYWHERE
-      { expiresIn: "7h" }
+      { id: admin._id, role: "admin" },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
     );
 
-    return res.json({
-      message: "Admin login successful",
-      token
-    });
-
+    res.json({ token });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
