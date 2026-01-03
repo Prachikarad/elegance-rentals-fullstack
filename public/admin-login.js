@@ -1,34 +1,32 @@
 async function adminLogin() {
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const msg = document.getElementById('msg');
-  msg.textContent = '';
+  const username = document.getElementById("adminUsername").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+  const msg = document.getElementById("adminMsg");
 
-  if (!username || !password) {
-    msg.textContent = 'Enter credentials';
-    return;
-  }
+  msg.innerHTML = "";
 
   try {
     const res = await fetch(
-      "https://elegance-rentals-fullstack.onrender.com/api/admin/login",
+      "https://elegance-rentals-fullstack.onrender.com/api/admin-auth/login",
       {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
       }
     );
 
     const data = await res.json();
 
-    if (res.status === 200 && data.token) {
-      // store admin token
-      localStorage.setItem('adminToken', data.token);
-      window.location.href = '/admin.html';
-    } else {
-      msg.textContent = data.message || 'Login failed';
+    if (!res.ok) {
+      msg.style.color = "red";
+      msg.innerHTML = data.message;
+      return;
     }
+
+    localStorage.setItem("adminToken", data.token);
+    window.location.href = "admin.html";
   } catch (err) {
-    msg.textContent = 'Server error, please try later';
+    msg.style.color = "red";
+    msg.innerHTML = "Server error. Try again later.";
   }
 }

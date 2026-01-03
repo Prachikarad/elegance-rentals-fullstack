@@ -228,19 +228,18 @@ async function loadStats() {
 }
 
 /* Add outfit */
-/* Add outfit */
 document.getElementById("addForm").addEventListener("submit", async e => {
   e.preventDefault();
 
   const token = localStorage.getItem("adminToken");
-  const msg = document.getElementById("msg"); // ✅ FIX
+  const msg = document.getElementById("msg");
 
   if (!token) {
     msg.innerHTML = "Admin not logged in";
     return;
   }
 
-  let formData = new FormData();
+  const formData = new FormData();
   formData.append("name", name.value);
   formData.append("category", category.value);
   formData.append("price", price.value);
@@ -248,8 +247,8 @@ document.getElementById("addForm").addEventListener("submit", async e => {
   formData.append("description", description.value);
   formData.append("image", image.files[0]);
 
-  let res = await fetch(
-    "https://elegance-rentals-fullstack.onrender.com/api/admin/items/add", // ✅ FIX
+  const res = await fetch(
+    "https://elegance-rentals-fullstack.onrender.com/api/admin/items/add",
     {
       method: "POST",
       headers: {
@@ -259,7 +258,7 @@ document.getElementById("addForm").addEventListener("submit", async e => {
     }
   );
 
-  let data = await res.json();
+  const data = await res.json();
   msg.innerHTML = data.message;
 });
 

@@ -1,23 +1,20 @@
-// middleware/adminAuth.js
 const jwt = require("jsonwebtoken");
 
-module.exports = function (req, res, next) {
-  try {
-    const header = req.headers.authorization;
+const JWT_SECRET = process.env.JWT_SECRET || "ADMIN_SECRET_KEY";
 
-    if (!header) {
+module.exports = function adminAuth(req, res, next) {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "No token provided" });
     }
 
-    const token = header.split(" ")[1];
-    if (!token) {
-      return res.status(401).json({ message: "Invalid token format" });
-    }
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (decoded.role !== "admin") {
-      return res.status(403).json({ message: "Not an admin" });
+    if (!decoded.isAdmin) {
+      return res.status(403).json({ message: "Not an admin account" });
     }
 
     req.admin = decoded;
