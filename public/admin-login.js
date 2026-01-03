@@ -19,12 +19,12 @@ async function adminLogin() {
 
     if (!res.ok) {
       msg.style.color = "red";
-      msg.innerHTML = data.message;
+      msg.innerHTML = data.message || "Login failed";
       return;
     }
 
     localStorage.setItem("adminToken", data.token);
-    window.location.href = "admin.html";
+    window.location.href = "/admin.html";
   } catch (err) {
     msg.style.color = "red";
     msg.innerHTML = "Server error. Try again later.";
