@@ -7,6 +7,7 @@ const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const itemRoutes = require("./routes/items");
+const adminAuthRoutes = require("./routes/adminAuth");
 
 
 // routes
@@ -27,6 +28,7 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads"))); 
 // mount routes
 if (authRoutes) app.use("/api/auth", authRoutes); // if you have auth routes
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/items", itemRoutes);
 
 
