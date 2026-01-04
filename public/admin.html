@@ -353,7 +353,6 @@ async function deleteItem(id) {
 
 /* EDIT item (prompt-based quick editor) */
 async function editItem(id) {
-  // fetch current item to prefill
   const token = localStorage.getItem("adminToken");
   const resItem = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items", {
     headers: { "Authorization": "Bearer " + token }
@@ -362,35 +361,34 @@ async function editItem(id) {
   const item = allItems.find(x => x._id === id);
   if (!item) return alert("Item not found");
 
-  // prompt for new values (leave blank to keep)
-  const newName = prompt("New name (leave blank to keep):", item.name) || item.name;
-  const newCategory = prompt("New category (leave blank to keep):", item.category || '') || item.category;
-  const newPrice = prompt("New price (leave blank to keep):", String(item.price)) || String(item.price);
-  const newDeposit = prompt("New deposit (leave blank to keep):", String(item.deposit || 0)) || String(item.deposit || 0);
-  const newSizes = prompt("Sizes comma separated (leave blank to keep):", (item.sizes || []).join(",")) || (item.sizes || []).join(",");
-  const newDesc = prompt("New description (leave blank to keep):", item.description || '') || item.description || '';
+  // Get new values - if user leaves blank, keep original
+  const newName = prompt("New name:", item.name);
+  if (newName === null) return; // User cancelled
+  
+  const newCategory = prompt("New category:", item.category || '');
+  if (newCategory === null) return;
+  
+  const newPrice = prompt("New price:", String(item.price));
+  if (newPrice === null) return;
+  
+  const newDeposit = prompt("New deposit:", String(item.deposit || 0));
+  if (newDeposit === null) return;
+  
+  const newDesc = prompt("New description:", item.description || '');
+  if (newDesc === null) return;
 
-  // ask if want to upload new image (quick approach: provide image URL)
-  const imageChoice = confirm("Do you want to update image by URL? (OK = Yes, Cancel = No)");
-  let newImageUrl = "";
-  if (imageChoice) {
-    newImageUrl = prompt("Enter full image URL (leave blank to skip):", item.image || "") || item.image || "";
-  }
-
-  // Build body
+  // Build body - only send values that are not empty
   const body = {
-    name: newName,
-    category: newCategory,
-    price: newPrice,
-    deposit: newDeposit,
-    sizes: newSizes,
-    description: newDesc
+    name: newName.trim() || item.name,
+    category: newCategory.trim() || item.category,
+    price: newPrice.trim() || String(item.price),
+    deposit: newDeposit.trim() || String(item.deposit),
+    description: newDesc.trim() || item.description
   };
-  if (newImageUrl) body.image = newImageUrl;
 
-  // send PUT
+  // Send PUT request
   try {
-    const res = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items" + id, {
+    const res = await fetch("https://elegance-rentals-fullstack.onrender.com/api/admin/items/" + id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -400,7 +398,7 @@ async function editItem(id) {
     });
     const data = await res.json();
     if (res.ok) {
-      alert("Item updated");
+      alert("Item updated successfully");
       loadItems();
     } else {
       alert(data.message || "Update failed");
@@ -410,7 +408,6 @@ async function editItem(id) {
     alert("Server error");
   }
 }
-
 
 /* Orders */
 async function loadOrders() {
