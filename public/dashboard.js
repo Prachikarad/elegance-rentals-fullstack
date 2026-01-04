@@ -16,12 +16,8 @@ async function loadItems() {
 function displayItems(list) {
   const container = document.getElementById("items");
   container.innerHTML = "";
-
   list.forEach(item => {
-    const imgURL = item.image.startsWith("/uploads")
-      ? item.image
-      : "/uploads/" + item.image;
-
+    const imgURL = item.image; // Simply use the image URL as-is
     container.innerHTML += `
       <div class="card" onclick="openItem('${item._id}')">
         <img src="${imgURL}" />
@@ -32,7 +28,6 @@ function displayItems(list) {
     `;
   });
 }
-
 /* --------------------------------------
         SEARCH BAR
 ---------------------------------------*/
