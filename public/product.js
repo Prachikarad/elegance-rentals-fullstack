@@ -16,11 +16,7 @@ async function loadProduct() {
         return;
     }
 
-    // Image
-    const imgSrc = item.image.startsWith("/")
-        ? item.image
-        : "/" + item.image;
-
+    const imgSrc = item.image; // Simply use the image URL as-is
     document.getElementById("productImage").src = imgSrc;
 
     // Product Details

@@ -15,7 +15,7 @@ async function loadRentItem() {
         return;
     }
 
-    const imgSrc = product.image.startsWith("/") ? product.image : "/" + product.image;
+    document.getElementById("rentImage").src = product.image;
 
     document.getElementById("rentImage").src = imgSrc;
     document.getElementById("rentName").innerText = product.name;
@@ -65,23 +65,39 @@ function calculate() {
 // CONFIRM ORDER BUTTON
 // === CONFIRM ORDER & MOVE TO CHECKOUT PAGE ===
 document.getElementById("confirmBtn").onclick = function () {
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
     const totalDays = Number(document.getElementById("days").innerText);
+    
+    // Validation
+    if (!startDate) {
+        alert("Please select a start date!");
+        return;
+    }
+    if (!endDate) {
+        alert("Please select an end date!");
+        return;
+    }
+    if (totalDays <= 0) {
+        alert("Please select valid dates. End date must be after start date!");
+        return;
+    }
+    
+    // If validation passes, proceed
     const totalRent = Number(document.getElementById("calculatedAmount").innerText);
     const discount = Number(document.getElementById("discount").innerText);
     const finalAmount = Number(document.getElementById("finalAmount").innerText);
-
+    
     const orderData = {
         itemId: id,
         totalDays,
         totalRent,
         discount,
         finalAmount,
-        startDate: document.getElementById("startDate").value,
-        endDate: document.getElementById("endDate").value
+        startDate: startDate,
+        endDate: endDate
     };
-
     localStorage.setItem("orderData", JSON.stringify(orderData));
-
     // Move to checkout
     window.location.href = "/checkout.html";
 };
