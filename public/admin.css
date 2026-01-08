@@ -17,3 +17,43 @@ body { margin:0; font-family:Poppins, sans-serif; display:flex; height:100vh; }
 .actionBtn { padding:6px 10px; border:none; border-radius:6px; cursor:pointer; }
 .editBtn { background:#6a11cb; color:white; }
 .delBtn { background:#e63946; color:white; }
+/* Center and improve Add Outfit form */
+#add .card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+#addForm input,
+#addForm textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+#addForm button {
+    padding: 12px 24px;
+    background: #2575fc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#addForm button:hover {
+    background: #1a5bd5;
+}
+
+#msg {
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+}
