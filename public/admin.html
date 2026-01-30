@@ -446,18 +446,28 @@ async function loadOrders() {
     let html = `
         <table>
             <tr>
-                <th>User</th>
+                <th>Customer Name</th>
+                <th>Mobile</th>
                 <th>Outfit</th>
-                <th>Total</th>
+                <th>Days</th>
+                <th>Amount</th>
+                <th>Payment</th>
+                <th>Address</th>
+                <th>Date</th>
             </tr>
     `;
 
     orders.forEach(o => {
         html += `
             <tr>
-                <td>${o.userId?.username}</td>
-                <td>${o.itemId?.name}</td>
-                <td>₹${o.totalAmount}</td>
+                <td>${o.customerName || 'N/A'}</td>
+                <td>${o.mobile || 'N/A'}</td>
+                <td>${o.itemId?.name || 'N/A'}</td>
+                <td>${o.totalDays || 0}</td>
+                <td>₹${o.totalAmount || 0}</td>
+                <td>${o.paymentMethod || 'N/A'}</td>
+                <td>${o.address || 'N/A'}, ${o.pincode || ''}</td>
+                <td>${new Date(o.createdAt).toLocaleDateString()}</td>
             </tr>
         `;
     });
