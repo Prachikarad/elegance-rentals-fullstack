@@ -2,9 +2,9 @@
 const mongoose = require('mongoose');
 
 const ItemSchema = new mongoose.Schema({
-  vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', default: null }
+  vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', default: null },
   name: { type: String, required: true },
-  price: { type: Number, required: true },         // price per day
+  price: { type: Number, required: true },
   image: { type: String, required: true },
   description: { type: String, default: '' },
   sizes: { type: [String], default: ['S','M','L'] },
