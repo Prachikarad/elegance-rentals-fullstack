@@ -8,6 +8,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const itemRoutes = require("./routes/items");
 const adminAuthRoutes = require("./routes/adminAuth");
+const vendorAuthRoutes = require('./routes/vendorAuth');
+const vendorRoutes = require('./routes/vendor');
+
 
 
 // routes
@@ -30,6 +33,8 @@ if (authRoutes) app.use("/api/auth", authRoutes); // if you have auth routes
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/items", itemRoutes);
+app.use('/api/vendor-auth', vendorAuthRoutes);
+app.use('/api/vendor', vendorRoutes);
 
 
 // test route

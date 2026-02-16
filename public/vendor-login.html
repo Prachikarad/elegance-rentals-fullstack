@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vendor Login - Elegance Rentals</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      width: 420px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .logo h1 {
+      font-family: 'Playfair Display', serif;
+      color: #1e1b4b;
+      font-size: 24px;
+    }
+
+    .logo p {
+      color: #7c3aed;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .tabs {
+      display: flex;
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6b7280;
+      transition: all 0.2s;
+    }
+
+    .tab.active {
+      background: white;
+      color: #7c3aed;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .form { display: none; }
+    .form.active { display: block; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+      margin-top: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    input:focus { border-color: #7c3aed; }
+
+    .btn {
+      width: 100%;
+      padding: 13px;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .btn:hover { background: #6d28d9; }
+
+    .msg {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      text-align: center;
+      display: none;
+    }
+
+    .msg.error { background: #fee2e2; color: #b91c1c; display: block; }
+    .msg.success { background: #d1fae5; color: #065f46; display: block; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">
+    <h1>Elegance Rentals</h1>
+    <p>🏪 Vendor / Shop Partner Portal</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('login')">Login</div>
+    <div class="tab" onclick="switchTab('register')">Register</div>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div id="loginForm" class="form active">
+    <label>Email Address</label>
+    <input type="email" id="loginEmail" placeholder="your@email.com">
+    <label>Password</label>
+    <input type="password" id="loginPassword" placeholder="Your password">
+    <button class="btn" onclick="vendorLogin()">Login to Dashboard →</button>
+    <p id="loginMsg" class="msg"></p>
+  </div>
+
+  <!-- REGISTER FORM -->
+  <div id="registerForm" class="form">
+    <label>Shop Name</label>
+    <input type="text" id="regShopName" placeholder="Your shop name">
+    <label>Email Address</label>
+    <input type="email" id="regEmail" placeholder="your@email.com">
+    <label>Phone Number</label>
+    <input type="text" id="regPhone" placeholder="Your phone number">
+    <label>Password</label>
+    <input type="password" id="regPassword" placeholder="Create a password">
+    <button class="btn" onclick="vendorRegister()">Create Account →</button>
+    <p id="registerMsg" class="msg"></p>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+
+  if (tab === 'login') {
+    document.querySelectorAll('.tab')[0].classList.add('active');
+    document.getElementById('loginForm').classList.add('active');
+  } else {
+    document.querySelectorAll('.tab')[1].classList.add('active');
+    document.getElementById('registerForm').classList.add('active');
+  }
+}
+
+async function vendorLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const msg = document.getElementById('loginMsg');
+  msg.className = 'msg';
+  msg.style.display = 'none';
+
+  if (!email || !password) {
+    msg.textContent = 'Please fill in all fields!';
+    msg.className = 'msg error';
+    return;
+  }
+
+  try {
+    const res = await fetch('https://elegance-rentals-fullstack.onrender.com/api/vendor-auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.textContent = data.message || 'Login failed';
+      msg.className = 'msg error';
+      return;
+    }
+
+    localStorage.setItem('vendorToken', data.token);
+    localStorage.setItem('vendorShopName', data.vendor.shopName);
+    window.location.href = '/vendor.html';
+
+  } catch (err) {
+    msg.textContent = 'Server error. Please try again.';
+    msg.className = 'msg error';
+  }
+}
+
+async function vendorRegister() {
+  const shopName = document.getElementById('regShopName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const password = document.getElementById('regPassword').value.trim();
+  const msg = document.getElementById('registerMsg');
+  msg.className = 'msg';
+  msg.style.display = 'none';
+
+  if (!shopName || !email || !password) {
+    msg.textContent = 'Please fill in all required fields!';
+    msg.className = 'msg error';
+    return;
+  }
+
+  try {
+    const res = await fetch('https://elegance-rentals-fullstack.onrender.com/api/vendor-auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shopName, email, phone, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.textContent = data.message || 'Registration failed';
+      msg.className = 'msg error';
+      return;
+    }
+
+    localStorage.setItem('vendorToken', data.token);
+    localStorage.setItem('vendorShopName', data.vendor.shopName);
+    window.location.href = '/vendor.html';
+
+  } catch (err) {
+    msg.textContent = 'Server error. Please try again.';
+    msg.className = 'msg error';
+  }
+}
+</script>
+</body>
+</html>
