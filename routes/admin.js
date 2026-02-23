@@ -104,5 +104,31 @@ router.delete("/items/:id", adminAuth, async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+// GET /api/admin/orders - Get all orders
+router.get("/orders", adminAuth, async (req, res) => {
+  try {
+    const Order = require("../models/Order");
+    const orders = await Order.find()
+      .populate("itemId")
+      .populate("userId", "username")
+      .sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// GET /api/admin/vendors - Get all vendors
+router.get("/vendors", adminAuth, async (req, res) => {
+  try {
+    const Vendor = require("../models/Vendor");
+    const vendors = await Vendor.find().select("-password").sort({ createdAt: -1 });
+    res.json(vendors);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 module.exports = router;
