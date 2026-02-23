@@ -54,5 +54,15 @@ router.get('/me', authMiddleware, async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 });
+// GET /api/auth/users - Get all users (for admin dashboard)
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 module.exports = router;
