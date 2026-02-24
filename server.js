@@ -10,6 +10,7 @@ const itemRoutes = require("./routes/items");
 const adminAuthRoutes = require("./routes/adminAuth");
 const vendorAuthRoutes = require('./routes/vendorAuth');
 const vendorRoutes = require('./routes/vendor');
+const orderRoutes = require("./routes/orders");
 
 
 
@@ -35,6 +36,7 @@ app.use("/api/admin-auth", adminAuthRoutes);
 app.use("/api/items", itemRoutes);
 app.use('/api/vendor-auth', vendorAuthRoutes);
 app.use('/api/vendor', vendorRoutes);
+app.use("/api/orders", orderRoutes); 
 
 
 // test route
