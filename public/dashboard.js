@@ -83,3 +83,36 @@ toggleBtn.onclick = () => {
   localStorage.setItem("theme", isDark ? "dark" : "light");
   toggleBtn.innerText = isDark ? "☀️" : "🌙";
 };
+// Store current item ID
+let currentItemId = null;
+
+// Show rental terms modal
+function showRentalTerms(itemId) {
+  currentItemId = itemId;
+  document.getElementById('rentalModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+// Hide rental modal
+function hideRentalModal() {
+  document.getElementById('rentalModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+  currentItemId = null;
+}
+
+// User agreed - go to product page
+function agreeAndContinue() {
+  if (currentItemId) {
+    localStorage.setItem('termsAgreed', 'true');
+    window.location.href = `/product.html?id=${currentItemId}`;
+  }
+  hideRentalModal();
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('rentalModal');
+  if (e.target === modal) {
+    hideRentalModal();
+  }
+});

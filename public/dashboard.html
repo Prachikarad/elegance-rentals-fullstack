@@ -37,6 +37,79 @@
 <div id="items" class="grid-container"></div>
 
 <script src="dashboard.js"></script>
+<!-- RENTAL TERMS MODAL -->
+<div class="modal-overlay" id="rentalModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>📋 Rental Terms & Conditions</h2>
+      <button class="close-btn" onclick="hideRentalModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- DAMAGE POLICY -->
+      <div class="terms-section">
+        <h3>💰 Damage & Loss Policy</h3>
+        <div class="damage-item">
+          <strong>Minor Damage</strong>
+          <span>Small stains, loose threads, minor wear: <strong>₹500 fine</strong></span>
+        </div>
+        <div class="damage-item">
+          <strong>Major Damage</strong>
+          <span>Tears, burns, heavy stains, broken accessories: <strong>₹1000-2000 fine</strong></span>
+        </div>
+        <div class="damage-item">
+          <strong>Lost or Missing Items</strong>
+          <span>Full outfit cost charged + security deposit forfeited</span>
+        </div>
+      </div>
+
+      <!-- RENTAL TERMS -->
+      <div class="terms-section">
+        <h3>📅 Rental Terms</h3>
+        <ul>
+          <li>Security deposit refunded within 3-5 business days after return</li>
+          <li>Late return charges: <strong>₹500/day</strong> after due date</li>
+          <li>Dry cleaning included for normal wear</li>
+          <li>Return in original packaging</li>
+          <li>ID proof required at delivery</li>
+        </ul>
+      </div>
+
+      <!-- CANCELLATION -->
+      <div class="terms-section">
+        <h3>🔄 Cancellation Policy</h3>
+        <ul>
+          <li><strong>100% refund:</strong> 48+ hours before rental</li>
+          <li><strong>50% refund:</strong> 24-48 hours before</li>
+          <li><strong>No refund:</strong> Less than 24 hours before</li>
+        </ul>
+      </div>
+
+      <!-- GUIDELINES -->
+      <div class="terms-section">
+        <h3>⚠️ Usage Guidelines</h3>
+        <ul>
+          <li>No alterations allowed</li>
+          <li>Handle with care</li>
+          <li>No direct perfume/deodorant on outfit</li>
+          <li>Keep away from food, drinks, smoke</li>
+        </ul>
+      </div>
+
+      <div class="warning-box">
+        <div class="warning-icon">⚠️</div>
+        <div class="warning-text">
+          <strong>Important:</strong> By proceeding, you agree to all terms. Violations may result in charges.
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="hideRentalModal()">Cancel</button>
+      <button class="agree-btn" onclick="agreeAndContinue()">I Agree & Continue →</button>
+    </div>
+  </div>
+</div>
 </body>
 
 </html>
