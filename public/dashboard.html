@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">Elegance Rentals</div>
@@ -16,12 +15,17 @@
     <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 </nav>
-
 <!-- CATEGORY FILTERS -->
 <div class="filters">
   <button onclick="filterCategory('All')">All</button>
   <button onclick="window.location.href='/wishlist.html'" class="wishlist-btn">
     Wishlist ❤️
+  </button>
+  <button onclick="showTermsModal()" class="terms-btn">
+    📋 Terms & Conditions
+  </button>
+  <button onclick="showContactModal()" class="contact-btn">
+    📞 Contact
   </button>
 </div>
 <section class="text-hero">
@@ -31,12 +35,10 @@
     Look stunning without buying.
   </p>
 </section>
-
 <!-- MAIN OUTFIT GRID -->
 <h2 class="section-title">Available Outfits</h2>
 <div id="items" class="grid-container"></div>
 
-<script src="dashboard.js"></script>
 <!-- RENTAL TERMS MODAL -->
 <div class="modal-overlay" id="rentalModal" style="display:none">
   <div class="modal">
@@ -44,7 +46,6 @@
       <h2>📋 Rental Terms & Conditions</h2>
       <button class="close-btn" onclick="hideRentalModal()">✕</button>
     </div>
-
     <div class="modal-body">
       <!-- DAMAGE POLICY -->
       <div class="terms-section">
@@ -62,7 +63,6 @@
           <span>Full outfit cost charged + security deposit forfeited</span>
         </div>
       </div>
-
       <!-- RENTAL TERMS -->
       <div class="terms-section">
         <h3>📅 Rental Terms</h3>
@@ -74,7 +74,6 @@
           <li>ID proof required at delivery</li>
         </ul>
       </div>
-
       <!-- CANCELLATION -->
       <div class="terms-section">
         <h3>🔄 Cancellation Policy</h3>
@@ -84,7 +83,6 @@
           <li><strong>No refund:</strong> Less than 24 hours before</li>
         </ul>
       </div>
-
       <!-- GUIDELINES -->
       <div class="terms-section">
         <h3>⚠️ Usage Guidelines</h3>
@@ -95,7 +93,6 @@
           <li>Keep away from food, drinks, smoke</li>
         </ul>
       </div>
-
       <div class="warning-box">
         <div class="warning-icon">⚠️</div>
         <div class="warning-text">
@@ -103,13 +100,56 @@
         </div>
       </div>
     </div>
-
     <div class="modal-footer">
       <button class="cancel-btn" onclick="hideRentalModal()">Cancel</button>
       <button class="agree-btn" onclick="agreeAndContinue()">I Agree & Continue →</button>
     </div>
   </div>
 </div>
-</body>
 
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal" style="display:none">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>📞 Contact Us</h2>
+      <button class="close-btn" onclick="hideContactModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="terms-section">
+        <h3>🏪 Elegance Rentals</h3>
+        <div style="line-height:1.8; color:#475569;">
+          <p><strong>📍 Address:</strong><br>
+          Abhinav college road narhe, pune<br>
+          Maharashtra - 413001, India</p>
+          
+          <p style="margin-top:16px"><strong>📧 Email:</strong><br>
+          <a href="mailto:support@elegancerentals.com" style="color:#2e5bff">support@elegancerentals.com</a></p>
+          
+          <p style="margin-top:16px"><strong>📱 Phone:</strong><br>
+          <a href="tel:+919876543210" style="color:#2e5bff">+91 98765 43210</a></p>
+          
+          <p style="margin-top:16px"><strong>🕐 Working Hours:</strong><br>
+          Monday - Saturday: 10:00 AM - 8:00 PM<br>
+          Sunday: 11:00 AM - 6:00 PM</p>
+        </div>
+      </div>
+      
+      <div class="terms-section">
+        <h3>💬 Send us a message</h3>
+        <form id="contactForm" style="display:flex; flex-direction:column; gap:12px;">
+          <input type="text" placeholder="Your Name" required style="padding:12px; border:1px solid #e2e8f0; border-radius:8px;">
+          <input type="email" placeholder="Your Email" required style="padding:12px; border:1px solid #e2e8f0; border-radius:8px;">
+          <textarea placeholder="Your Message" rows="4" required style="padding:12px; border:1px solid #e2e8f0; border-radius:8px; resize:vertical;"></textarea>
+          <button type="submit" class="agree-btn" style="margin-top:8px;">Send Message</button>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="cancel-btn" onclick="hideContactModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="dashboard.js"></script>
+</body>
 </html>

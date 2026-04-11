@@ -116,3 +116,43 @@ document.addEventListener('click', function(e) {
     hideRentalModal();
   }
 });
+/* --------------------------------------
+    TERMS & CONDITIONS MODAL (from navbar)
+---------------------------------------*/
+function showTermsModal() {
+  document.getElementById('rentalModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  // Note: we reuse the same rental modal but without item ID
+  currentItemId = null;
+}
+ 
+/* --------------------------------------
+    CONTACT MODAL
+---------------------------------------*/
+function showContactModal() {
+  document.getElementById('contactModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+ 
+function hideContactModal() {
+  document.getElementById('contactModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+ 
+// Close contact modal when clicking outside
+document.getElementById('contactModal')?.addEventListener('click', function(e) {
+  if (e.target === this) {
+    hideContactModal();
+  }
+});
+ 
+// Handle contact form submission
+document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  alert('Thank you for your message! We will get back to you soon.');
+  hideContactModal();
+  this.reset();
+});
+ 
+// Initialize
+loadItems();
