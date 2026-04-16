@@ -49,7 +49,27 @@
   <p id="msg"></p>
 </div>
 
-<script src="scripts/checkout.js"></script>
+<!-- 🔥 FORCE LOAD RAZORPAY FIRST -->
+<script>
+  const script = document.createElement("script");
+  script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+  script.onload = function () {
+    console.log("Razorpay loaded ✅");
+
+    // Load your main JS AFTER Razorpay
+    const myScript = document.createElement("script");
+    myScript.src = "/scripts/checkout.js";
+    document.body.appendChild(myScript);
+  };
+
+  script.onerror = function () {
+    console.log("Razorpay failed ❌");
+    alert("Payment system failed to load");
+  };
+
+  document.body.appendChild(script);
+</script>
 
 </body>
 </html>
