@@ -3,7 +3,7 @@ if (!localStorage.getItem("adminToken")) {
     window.location.href = "admin-login.html";
 }
 
-const BASE = "https://elegance-rentals-fullstack.onrender.com";
+const BASE = "";
 
 /* Sidebar switching */
 function showPanel(id) {

@@ -192,7 +192,7 @@ async function vendorLogin() {
   }
 
   try {
-    const res = await fetch('https://elegance-rentals-fullstack.onrender.com/api/vendor-auth/login', {
+    const res = await fetch('/api/vendor-auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -232,7 +232,7 @@ async function vendorRegister() {
   }
 
   try {
-    const res = await fetch('https://elegance-rentals-fullstack.onrender.com/api/vendor-auth/register', {
+    const res = await fetch('/api/vendor-auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ shopName, email, phone, password })

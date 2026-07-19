@@ -5,7 +5,7 @@ let product = null;
 
 // Load item data
 async function loadRentItem() {
-    const res = await fetch("https://elegance-rentals-fullstack.onrender.com/api/items");
+    const res = await fetch("/api/items");
     const items = await res.json();
     product = items.find(x => x._id === id);
     
