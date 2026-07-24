@@ -20,8 +20,9 @@ View registered users
 Dashboard with statistics
 
 🚀 Live Demo
-Website: https://elegance-rentals-fullstack.onrender.com
-Admin Panel: https://elegance-rentals-fullstack.onrender.com/admin-login.html
+Website: https://elegance-rentals.vercel.app/
+Admin Panel: https://elegance-rentals.vercel.app/admin-login.html
+Vendor panel: https://elegance-rentals.vercel.app/vendor-login.html
 🛠️ Tech Stack
 Frontend
 
